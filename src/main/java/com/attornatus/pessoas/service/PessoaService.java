@@ -77,6 +77,7 @@ public class PessoaService {
     public PessoaAtualizaDTO atualizarPessoa(PessoaAtualizaDTO pessoaDados) {
         Pessoa pessoa = pessoaRepository.getReferenceById(pessoaDados.getId());
         modelMapper.map(pessoaDados, pessoa);
+        pessoa.setModificadoEm(LocalDateTime.now());
         pessoaRepository.save(pessoa);
 
 
