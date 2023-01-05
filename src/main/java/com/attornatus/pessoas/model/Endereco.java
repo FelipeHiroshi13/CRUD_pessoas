@@ -35,4 +35,12 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoaId;
+
+    public Endereco(String logradouro, String cep, String numero, String cidade, Boolean enderecoPrincipal) {
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.enderecoPrincipal = enderecoPrincipal;
+    }
 }

@@ -7,11 +7,11 @@ import com.attornatus.pessoas.repository.EnderecoRepository;
 import com.attornatus.pessoas.repository.PessoaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PessoaService {
@@ -30,12 +30,14 @@ public class PessoaService {
         pessoa.setRegistradoEm(LocalDateTime.now());
         pessoa.setModificadoEm(LocalDateTime.now());
 
-        for(Endereco endereco : pessoa.getEnderecos()){
-            endereco.setPessoaId(pessoa);
-        }
+        if(pessoa.getEnderecos() != null){
+            for(Endereco endereco : pessoa.getEnderecos()){
+                endereco.setPessoaId(pessoa);
+            }
 
-        if(pessoa.semEnderecoPrincipal()){
-            pessoa.getEnderecos().get(0).setEnderecoPrincipal(true);
+            if(pessoa.semEnderecoPrincipal()){
+                pessoa.getEnderecos().get(0).setEnderecoPrincipal(true);
+            }
         }
 
         pessoaRepository.save(pessoa);
@@ -43,10 +45,11 @@ public class PessoaService {
         return modelMapper.map(pessoa, PessoaRegistroDTO.class);
     }
 
-    public Page<PessoaListaDTO> listarPessoas(Pageable paginacao) {
+    public List<PessoaListaDTO> listarPessoas() {
         return pessoaRepository
-                .findAll(paginacao)
-                .map(p -> modelMapper.map(p, PessoaListaDTO.class));
+                .findAll()
+                .stream()
+                .map(p -> modelMapper.map(p, PessoaListaDTO.class)).collect(Collectors.toList());
     }
 
 

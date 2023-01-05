@@ -45,4 +45,8 @@ public class Pessoa {
         return true;
     }
 
+    public Pessoa(String nome, LocalDate dataNascimento) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+    }
 }

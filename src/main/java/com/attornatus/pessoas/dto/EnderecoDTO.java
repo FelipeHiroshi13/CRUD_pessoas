@@ -16,4 +16,12 @@ public class EnderecoDTO {
     private String numero;
     private String cidade;
     private boolean enderecoPrincipal;
+
+    public EnderecoDTO(String logradouro, String cep, String numero, String cidade, boolean enderecoPrincipal) {
+        this.logradouro = logradouro;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.enderecoPrincipal = enderecoPrincipal;
+    }
 }
