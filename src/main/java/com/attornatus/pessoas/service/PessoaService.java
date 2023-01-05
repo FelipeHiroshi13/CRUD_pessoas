@@ -34,6 +34,10 @@ public class PessoaService {
             endereco.setPessoaId(pessoa);
         }
 
+        if(pessoa.semEnderecoPrincipal()){
+            pessoa.getEnderecos().get(0).setEnderecoPrincipal(true);
+        }
+
         pessoaRepository.save(pessoa);
 
         return modelMapper.map(pessoa, PessoaRegistroDTO.class);
@@ -52,7 +56,7 @@ public class PessoaService {
         return modelMapper.map(pessoa, PessoaRegistroDTO.class);
     }
 
-    //TODO: DEIXAR MAIS SIMPLES
+
     public EnderecosPessoaDTO listarEnderecosPessoa(Long id) {
         Pessoa pessoa = pessoaRepository.getReferenceById(id);
 
@@ -67,7 +71,7 @@ public class PessoaService {
     }
 
 
-    public PessoaAtualizaDTO atualizar(PessoaAtualizaDTO pessoaDados) {
+    public PessoaAtualizaDTO atualizarPessoa(PessoaAtualizaDTO pessoaDados) {
         Pessoa pessoa = pessoaRepository.getReferenceById(pessoaDados.getId());
         modelMapper.map(pessoaDados, pessoa);
         pessoaRepository.save(pessoa);
@@ -80,6 +84,19 @@ public class PessoaService {
         Pessoa pessoa = pessoaRepository.getReferenceById(id);
         Endereco novoEndereco = modelMapper.map(enderecoDto, Endereco.class);
         novoEndereco.setPessoaId(pessoa);
+
+        if(pessoa.getEnderecos().size() == 0){
+            novoEndereco.setEnderecoPrincipal(true);
+        }
+
+        if(pessoa.getEnderecos().size() > 0 && novoEndereco.getEnderecoPrincipal()){
+            Endereco enderecoPrincipalAntigo = modelMapper
+                    .map(listarEnderecoPrincipalPessoa(id), Endereco.class);
+            enderecoPrincipalAntigo.setEnderecoPrincipal(false);
+            enderecoPrincipalAntigo.setPessoaId(pessoa);
+
+            enderecoRepository.save(enderecoPrincipalAntigo);
+        }
 
         enderecoRepository.save(novoEndereco);
 

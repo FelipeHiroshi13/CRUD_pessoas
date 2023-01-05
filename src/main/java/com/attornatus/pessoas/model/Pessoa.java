@@ -36,4 +36,13 @@ public class Pessoa {
 
     private LocalDateTime modificadoEm;
 
+
+    public Boolean semEnderecoPrincipal(){
+        for(Endereco endereco : this.enderecos){
+            if(endereco.getEnderecoPrincipal())
+                return false;
+        }
+        return true;
+    }
+
 }

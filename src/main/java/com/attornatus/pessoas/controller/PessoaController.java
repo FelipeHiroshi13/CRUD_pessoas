@@ -75,7 +75,7 @@ public class PessoaController {
     @PutMapping
     @Transactional
     public ResponseEntity atualizaDadosPessoa(@RequestBody @Valid PessoaAtualizaDTO dados){
-        PessoaAtualizaDTO pessoaDadosAtualizados = service.atualizar(dados);
+        PessoaAtualizaDTO pessoaDadosAtualizados = service.atualizarPessoa(dados);
 
         return ResponseEntity.ok(pessoaDadosAtualizados);
     }
